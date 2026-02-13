@@ -182,7 +182,7 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
 
     return (
         <div id="video-container">
-            <video ref={videoRef} className="input_video" playsInline></video>
+            <video ref={videoRef} className="input_video" autoPlay muted playsInline></video>
             <canvas ref={canvasRef} id="output_canvas"></canvas>
         </div>
     );

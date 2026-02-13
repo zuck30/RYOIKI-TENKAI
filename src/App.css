@@ -30,7 +30,7 @@ h1 {
 #video-container {
     position: absolute;
     bottom: 2%;
-    left: 18%;
+    left: 50%;
     transform: translateX(-50%) scaleX(-1);
     width: 85vw;
     max-width: 450px;
@@ -43,7 +43,7 @@ h1 {
     box-shadow: 0 0 40px rgba(0,0,0,0.9);
 }
 
-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+video { width: 100%; height: 100%; object-fit: cover; opacity: 1; }
 #output_canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 #grain {

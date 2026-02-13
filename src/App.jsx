@@ -4,7 +4,7 @@ import CursedVisualizer from './components/CursedVisualizer';
 import UI from './components/UI';
 
 const App = () => {
-    const [currentTech, setCurrentTech] = useState('none');
+    const [currentTech, setCurrentTech] = useState('neutral');
     const [glowColor, setGlowColor] = useState('#00ffff');
 
     const handleTechniqueDetected = useCallback((tech) => {
