@@ -11,7 +11,7 @@ body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courie
 }
 
 h1 {
-    font-size: 3rem; margin: 0; letter-spacing: 10px;
+    font-size: 4rem; margin: 0; letter-spacing: 15px;
     font-weight: 900;
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     background: linear-gradient(to bottom, #fff, #888);
@@ -20,10 +20,19 @@ h1 {
 }
 
 #technique-name {
-    font-size: 1.2rem; color: #00ffff; margin-top: 15px;
-    font-weight: bold; letter-spacing: 4px;
+    font-size: 2rem; color: #00ffff; margin-top: 20px;
+    font-weight: bold; letter-spacing: 6px;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+#character-name {
+    font-size: 1.2rem; color: #fff; margin-top: 8px;
+    font-style: italic; letter-spacing: 3px;
+    opacity: 0.9;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
 }
 
 /* Large Centered Camera Hub - Taller for Reel Context */
