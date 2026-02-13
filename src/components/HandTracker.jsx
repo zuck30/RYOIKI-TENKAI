@@ -27,6 +27,7 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
             return;
         }
 
+        let isStopped = false;
         const videoElement = videoRef.current;
         const canvasElement = canvasRef.current;
         const canvasCtx = canvasElement.getContext('2d');
@@ -45,7 +46,7 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
         });
 
         hands.onResults((results) => {
-            if (!videoElement || !canvasElement) return;
+            if (isStopped || !videoElement || !canvasElement) return;
 
             canvasElement.width = videoElement.videoWidth;
             canvasElement.height = videoElement.videoHeight;
@@ -139,7 +140,12 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
 
         const camera = new Camera(videoElement, {
             onFrame: async () => {
-                await hands.send({ image: videoElement });
+                if (isStopped) return;
+                try {
+                    await hands.send({ image: videoElement });
+                } catch (e) {
+                    console.error('Hands send error', e);
+                }
             },
             width: 640,
             height: 480
@@ -147,7 +153,14 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
         camera.start();
 
         return () => {
+            isStopped = true;
             camera.stop();
+            if (videoElement && videoElement.srcObject) {
+                const stream = videoElement.srcObject;
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                videoElement.srcObject = null;
+            }
             hands.close();
         };
     }, [onTechniqueDetected, onGlowChange]);
