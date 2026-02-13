@@ -1,0 +1,53 @@
+body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courier New', sans-serif; }
+
+#ui {
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    pointer-events: none;
+    z-index: 10;
+}
+
+h1 {
+    font-size: 3rem; margin: 0; letter-spacing: 10px;
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#technique-name {
+    font-size: 1.2rem; color: #00ffff; margin-top: 15px;
+    font-weight: bold; letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Large Centered Camera Hub - Taller for Reel Context */
+#video-container {
+    position: absolute;
+    bottom: 2%;
+    left: 18%;
+    transform: translateX(-50%) scaleX(-1);
+    width: 85vw;
+    max-width: 450px;
+    height: 42vh;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 20;
+    background-color: #000;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,0,0,0.9);
+}
+
+video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+#output_canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+#grain {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+}
