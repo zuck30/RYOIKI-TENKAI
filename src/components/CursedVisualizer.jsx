@@ -50,7 +50,91 @@ const getShrine = (i) => {
     } else return { x: 0, y: 0, z: 0, r: 0, g: 0, b: 0, s: 0 };
 };
 
-const CursedVisualizer = ({ currentTech }) => {
+const getBlackFlash = (i) => {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 5 + (i % 8) * 6 + Math.random() * 3;
+    const isRed = Math.random() > 0.4;
+    return { x: radius * Math.cos(angle), y: radius * Math.sin(angle), z: (Math.random()-0.5)*10, r: isRed?1:0, g: 0, b: 0, s: 2.5 };
+};
+
+const getIdleTransfiguration = (i) => {
+    const t = i / COUNT;
+    const r = 15 + Math.sin(t * 50 + Date.now()*0.001) * 5;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const isWhite = Math.random() > 0.8;
+    return { x: r * Math.sin(phi) * Math.cos(theta), y: r * Math.sin(phi) * Math.sin(theta), z: r * Math.cos(phi), r: isWhite?1:0.6, g: isWhite?1:0.35, b: isWhite?1:0.7, s: 1.2 };
+};
+
+const getBoogieWoogie = (i) => {
+    const side = (i < COUNT/2) ? 1 : -1;
+    const x = side * 15 + (Math.random()-0.5)*10;
+    return { x: x, y: (Math.random()-0.5)*40, z: (Math.random()-0.5)*10, r: 0.7, g: 0, b: 1, s: 1.5 };
+};
+
+const getTenShadows = (i) => {
+    const group = i % 4;
+    let x, y, z;
+    if (group === 0) { x = (Math.random()-0.5)*10; y = (Math.random()-0.5)*20; z = Math.random()*15; }
+    else if (group === 1) { x = (Math.random()-0.5)*30; y = 10; z = (Math.random()-0.5)*5; }
+    else { x = (Math.random()-0.5)*60; y = -15; z = (Math.random()-0.5)*60; }
+    return { x, y, z, r: 0.1, g: 0.15, b: 0.2, s: 1.5 };
+};
+
+const getDisasterFlames = () => {
+    const r = Math.sqrt(Math.random()) * 25;
+    const theta = Math.random() * Math.PI * 2;
+    const y = Math.pow(Math.random(), 1.5) * 50;
+    return { x: r * Math.cos(theta) * (y/50 + 0.1), y: y - 15, z: r * Math.sin(theta) * (y/50 + 0.1), r: 1, g: 0.3+Math.random()*0.4, b: 0, s: 1.8 };
+};
+
+const getCursedSpeech = (i) => {
+    const ring = (i % 10);
+    const angle = (i / COUNT) * Math.PI * 20;
+    const radius = ring * 6 + 5;
+    return { x: radius * Math.cos(angle), y: radius * Math.sin(angle), z: (Math.random()-0.5)*2, r: 1, g: 0.85, b: 0, s: 2.0 };
+};
+
+const getConstruction = () => {
+    const x = (Math.random()-0.5)*40;
+    const y = (Math.random()-0.5)*40;
+    const z = (Math.random()-0.5)*40;
+    return { x, y, z, r: 0, g: 1, b: 1, s: 1.2 };
+};
+
+const getComedy = () => {
+    const angle = Math.random() * Math.PI * 2;
+    const r = 10 + Math.random()*30;
+    return { x: r*Math.cos(angle), y: r*Math.sin(angle), z: (Math.random()-0.5)*20, r: 1, g: 0.4, b: 0.7, s: 2.5 };
+};
+
+const getBloodManipulation = (i) => {
+    const t = i / COUNT;
+    const angle = t * 60;
+    const r = 5 + t * 20;
+    return { x: r*Math.cos(angle), y: (t-0.5)*60, z: r*Math.sin(angle), r: 0.8, g: 0, b: 0, s: 1.5 };
+};
+
+const getRatioTechnique = (i) => {
+    const isH = (i % 2 === 0);
+    const grid = Math.floor(i/2000) % 5;
+    return { x: isH ? (Math.random()-0.5)*80 : grid*15-30, y: isH ? grid*15-30 : (Math.random()-0.5)*80, z: 0, r: 1, g: 0.85, b: 0, s: 1.2 };
+};
+
+const getJackpot = () => {
+    const r = Math.random()*50;
+    const theta = Math.random()*Math.PI*2;
+    return { x: r*Math.cos(theta), y: r*Math.sin(theta), z: (Math.random()-0.5)*30, r: 1, g: 0.8, b: 0, s: 2.0 };
+};
+
+const getSkyManipulation = () => {
+    const r = 20 + (Math.random()-0.5)*10;
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.random()*Math.PI;
+    return { x: r*Math.sin(phi)*Math.cos(theta), y: r*Math.sin(phi)*Math.sin(theta), z: r*Math.cos(phi), r: 0.5, g: 0.8, b: 1, s: 1.5 };
+};
+
+const CursedVisualizer = ({ technique }) => {
     const mountRef = useRef(null);
     const rendererRef = useRef(null);
     const bloomPassRef = useRef(null);
@@ -59,7 +143,7 @@ const CursedVisualizer = ({ currentTech }) => {
     const targetColorsRef = useRef(new Float32Array(COUNT * 3));
     const targetSizesRef = useRef(new Float32Array(COUNT));
     const shakeIntensityRef = useRef(0);
-    const currentTechRef = useRef(currentTech);
+    const currentTechRef = useRef(technique);
 
     useEffect(() => {
         // Init
@@ -124,6 +208,16 @@ const CursedVisualizer = ({ currentTech }) => {
                 particles.rotation.y += 0.05;
             } else if (currentTechRef.current === 'shrine') {
                 particles.rotation.set(0, 0, 0);
+            } else if (currentTechRef.current === 'blackFlash') {
+                particles.rotation.z += 0.3;
+            } else if (currentTechRef.current === 'bloodManipulation') {
+                particles.rotation.y += 0.1;
+            } else if (currentTechRef.current === 'jackpot') {
+                particles.rotation.y += 0.2;
+                particles.rotation.x += 0.05;
+            } else if (currentTechRef.current === 'skyManipulation') {
+                particles.rotation.z += 0.02;
+                particles.rotation.x += 0.01;
             } else {
                 particles.rotation.y += 0.005;
             }
@@ -148,20 +242,37 @@ const CursedVisualizer = ({ currentTech }) => {
             if (mount && renderer.domElement) {
                 mount.removeChild(renderer.domElement);
             }
+            geometry.dispose();
+            particles.material.dispose();
             renderer.dispose();
+            composer.passes.forEach(pass => {
+                if (pass.dispose) pass.dispose();
+            });
         };
     }, []);
 
     useEffect(() => {
-        currentTechRef.current = currentTech;
-        const tech = currentTech;
-        shakeIntensityRef.current = tech !== 'neutral' ? 0.4 : 0;
+        currentTechRef.current = technique;
+        const tech = technique;
+        shakeIntensityRef.current = (tech !== 'neutral' && tech !== 'none') ? 0.4 : 0;
 
         if (bloomPassRef.current) {
             if(tech === 'shrine') { bloomPassRef.current.strength = 2.5; }
             else if(tech === 'purple') { bloomPassRef.current.strength = 4.0; }
             else if(tech === 'void') { bloomPassRef.current.strength = 2.0; }
             else if(tech === 'red') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'blackFlash') { bloomPassRef.current.strength = 3.5; }
+            else if(tech === 'idleTransfiguration') { bloomPassRef.current.strength = 2.0; }
+            else if(tech === 'boogieWoogie') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'tenShadows') { bloomPassRef.current.strength = 1.5; }
+            else if(tech === 'disasterFlames') { bloomPassRef.current.strength = 3.0; }
+            else if(tech === 'cursedSpeech') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'construction') { bloomPassRef.current.strength = 2.0; }
+            else if(tech === 'comedy') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'bloodManipulation') { bloomPassRef.current.strength = 2.0; }
+            else if(tech === 'ratioTechnique') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'jackpot') { bloomPassRef.current.strength = 3.5; }
+            else if(tech === 'skyManipulation') { bloomPassRef.current.strength = 2.0; }
             else { bloomPassRef.current.strength = 1.0; }
         }
 
@@ -177,12 +288,24 @@ const CursedVisualizer = ({ currentTech }) => {
             else if(tech === 'void') p = getVoid(i);
             else if(tech === 'purple') p = getPurple();
             else if(tech === 'shrine') p = getShrine(i);
+            else if(tech === 'blackFlash') p = getBlackFlash(i);
+            else if(tech === 'idleTransfiguration') p = getIdleTransfiguration(i);
+            else if(tech === 'boogieWoogie') p = getBoogieWoogie(i);
+            else if(tech === 'tenShadows') p = getTenShadows(i);
+            else if(tech === 'disasterFlames') p = getDisasterFlames();
+            else if(tech === 'cursedSpeech') p = getCursedSpeech(i);
+            else if(tech === 'construction') p = getConstruction();
+            else if(tech === 'comedy') p = getComedy();
+            else if(tech === 'bloodManipulation') p = getBloodManipulation(i);
+            else if(tech === 'ratioTechnique') p = getRatioTechnique(i);
+            else if(tech === 'jackpot') p = getJackpot();
+            else if(tech === 'skyManipulation') p = getSkyManipulation();
 
             targetPositionsRef.current[i*3] = p.x; targetPositionsRef.current[i*3+1] = p.y; targetPositionsRef.current[i*3+2] = p.z;
             targetColorsRef.current[i*3] = p.r; targetColorsRef.current[i*3+1] = p.g; targetColorsRef.current[i*3+2] = p.b;
             targetSizesRef.current[i] = p.s;
         }
-    }, [currentTech]);
+    }, [technique]);
 
     return <div ref={mountRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none' }} />;
 };
