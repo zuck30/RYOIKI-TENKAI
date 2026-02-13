@@ -28,6 +28,7 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
         }
 
         let isStopped = false;
+        let camera = null;
         const videoElement = videoRef.current;
         const canvasElement = canvasRef.current;
         const canvasCtx = canvasElement.getContext('2d');
@@ -138,23 +139,37 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
             canvasCtx.restore();
         });
 
-        const camera = new Camera(videoElement, {
-            onFrame: async () => {
-                if (isStopped) return;
-                try {
-                    await hands.send({ image: videoElement });
-                } catch (e) {
-                    console.error('Hands send error', e);
-                }
-            },
-            width: 640,
-            height: 480
-        });
-        camera.start();
+        const startCamera = async () => {
+            // Small delay to ensure previous hardware sessions are released
+            await new Promise(resolve => setTimeout(resolve, 500));
+            if (isStopped || !videoElement) return;
+
+            try {
+                camera = new Camera(videoElement, {
+                    onFrame: async () => {
+                        if (isStopped) return;
+                        try {
+                            await hands.send({ image: videoElement });
+                        } catch {
+                            // Suppress errors after stop
+                        }
+                    },
+                    width: 640,
+                    height: 480
+                });
+                await camera.start();
+            } catch (err) {
+                console.error("Camera start failed:", err);
+            }
+        };
+
+        startCamera();
 
         return () => {
             isStopped = true;
-            camera.stop();
+            if (camera) {
+                camera.stop();
+            }
             if (videoElement && videoElement.srcObject) {
                 const stream = videoElement.srcObject;
                 const tracks = stream.getTracks();
