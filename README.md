@@ -28,6 +28,6 @@ You need a modern web browser (Chrome, Edge, Firefox) and a webcam.
 ### Installation
 1.  **Clone the repo**
     ```bash
-    git clone [https://github.com/reinesana/RYOIKI-TENKAI.git](https://github.com/reinesana/RYOIKI-TENKAI.git)
+    git clone [https://github.com/zuck30/RYOIKI-TENKAI.git](https://github.com/zuck30/RYOIKI-TENKAI.git)
     cd RYOIKI-TENKAI
     ```
