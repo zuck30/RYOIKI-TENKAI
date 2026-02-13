@@ -22,7 +22,7 @@ const TECH_NAMES = {
 };
 
 const UI = ({ technique }) => {
-    const name = TECH_NAMES[technique] || '';
+    const name = TECH_NAMES[technique] || (technique !== 'none' ? technique : '');
     return (
         <>
             <div id="grain"></div>
