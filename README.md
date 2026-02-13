@@ -1,8 +1,6 @@
-Here's your refined README.md with the same look and design as the template:
+# RYOIKI-TENKAI
 
-# RYOIKI-TENKAI (React Refactor)
-
-![Banner](https://capsule-render.vercel.app/api?type=venom&height=200&color=0:667eea,100:764ba2&text=RYOIKI-TENKAI&textBg=false&desc=(Cursed+Technique+Visualizer)&descAlign=79&fontAlign=50&descAlignY=70&fontColor=f7f5f5)
+![Banner](https://capsule-render.vercel.app/api?type=venom&height=200&color=0:667eea,100:764ba2&text=RYOIKI-TENKAI&textBg=false&desc=(Domain+Expansion)&descAlign=79&fontAlign=50&descAlignY=70&fontColor=f7f5f5)
 
 <p align="center">
 RYOIKI-TENKAI is a cursed technique visualizer based on the popular anime series, Jujutsu Kaisen 呪術廻戦. It combines the MediaPipe library with Three.js to recreate cursed techniques from Jujutsu Kaisen through hand gestures and particle systems.
