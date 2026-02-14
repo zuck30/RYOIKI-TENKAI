@@ -93,14 +93,14 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
                     const isUp = (t, p) => landmarks[t].y < landmarks[p].y;
                     const pinch = Math.hypot(landmarks[8].x - landmarks[4].x, landmarks[8].y - landmarks[4].y);
 
-                    if (pinch < 0.04) detected = 'purple';
+                    if (pinch < 0.04) detected = 'hollowPurple';
                     else if (detectClosedFist(landmarks)) detected = landmarks[0].y < 0.35 ? 'jackpot' : 'blackFlash';
                     else if (detectFingerGuns(landmarks)) detected = 'comedy';
                     else if (detectFingerDrawing(landmarks)) detected = 'bloodManipulation';
                     else if (detectClawedHand(landmarks)) detected = 'disasterFlames';
                     else if (detectHandChopping(landmarks)) detected = 'ratioTechnique';
-                    else if (isUp(8,6) && isUp(12,10) && isUp(16,14) && isUp(20,18)) detected = 'shrine';
-                    else if (isUp(8,6) && isUp(12,10) && !isUp(16,14)) detected = 'void';
+                    else if (isUp(8,6) && isUp(12,10) && isUp(16,14) && isUp(20,18)) detected = 'malevolentShrine';
+                    else if (isUp(8,6) && isUp(12,10) && !isUp(16,14)) detected = 'infiniteVoid';
                     else if (isUp(8,6) && !isUp(12,10)) detected = 'red';
                     else if (detectOpenPalm(landmarks)) detected = (landmarks[0].x < 0.25 || landmarks[0].x > 0.75) ? 'skyManipulation' : 'construction';
                     else if (landmarks[8].y > landmarks[7].y && landmarks[12].y > landmarks[11].y) detected = 'idleTransfiguration';
@@ -114,10 +114,10 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
 
                 // Trigger glow change based on technique
                 const colors = {
-                    purple: '#a855f7',
+                    hollowPurple: '#a855f7',
                     red: '#ef4444',
-                    void: '#3b82f6',
-                    shrine: '#991b1b',
+                    infiniteVoid: '#3b82f6',
+                    malevolentShrine: '#991b1b',
                     blackFlash: '#000000',
                     idleTransfiguration: '#9b59b6',
                     boogieWoogie: '#800080',

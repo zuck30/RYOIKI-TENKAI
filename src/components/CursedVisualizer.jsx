@@ -204,10 +204,10 @@ const CursedVisualizer = ({ technique }) => {
 
             if(currentTechRef.current === 'red') {
                 particles.rotation.z -= 0.1;
-            } else if (currentTechRef.current === 'purple') {
+            } else if (currentTechRef.current === 'hollowPurple') {
                 particles.rotation.z += 0.2;
                 particles.rotation.y += 0.05;
-            } else if (currentTechRef.current === 'shrine') {
+            } else if (currentTechRef.current === 'malevolentShrine') {
                 particles.rotation.set(0, 0, 0);
             } else if (currentTechRef.current === 'blackFlash') {
                 particles.rotation.z += 0.3;
@@ -258,9 +258,9 @@ const CursedVisualizer = ({ technique }) => {
         shakeIntensityRef.current = (tech !== 'neutral' && tech !== 'none') ? 0.4 : 0;
 
         if (bloomPassRef.current) {
-            if(tech === 'shrine') { bloomPassRef.current.strength = 2.5; }
-            else if(tech === 'purple') { bloomPassRef.current.strength = 4.0; }
-            else if(tech === 'void') { bloomPassRef.current.strength = 2.0; }
+            if(tech === 'malevolentShrine') { bloomPassRef.current.strength = 2.5; }
+            else if(tech === 'hollowPurple') { bloomPassRef.current.strength = 4.0; }
+            else if(tech === 'infiniteVoid') { bloomPassRef.current.strength = 2.0; }
             else if(tech === 'red') { bloomPassRef.current.strength = 2.5; }
             else if(tech === 'blackFlash') { bloomPassRef.current.strength = 3.5; }
             else if(tech === 'idleTransfiguration') { bloomPassRef.current.strength = 2.0; }
@@ -286,9 +286,9 @@ const CursedVisualizer = ({ technique }) => {
                 }
             }
             else if(tech === 'red') p = getRed(i);
-            else if(tech === 'void') p = getVoid(i);
-            else if(tech === 'purple') p = getPurple();
-            else if(tech === 'shrine') p = getShrine(i);
+            else if(tech === 'infiniteVoid') p = getVoid(i);
+            else if(tech === 'hollowPurple') p = getPurple();
+            else if(tech === 'malevolentShrine') p = getShrine(i);
             else if(tech === 'blackFlash') p = getBlackFlash(i);
             else if(tech === 'idleTransfiguration') p = getIdleTransfiguration(i);
             else if(tech === 'boogieWoogie') p = getBoogieWoogie(i);
