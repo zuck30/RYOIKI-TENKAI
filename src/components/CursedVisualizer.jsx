@@ -279,10 +279,14 @@ const CursedVisualizer = ({ technique }) => {
 
         for(let i=0; i<COUNT; i++) {
             let p = { x: 0, y: 0, z: 0, r: 0, g: 0, b: 0, s: 0 };
-            if(tech === 'neutral') {
+            if(tech === 'neutral' || tech === 'none') {
+                // Initialize a base field for neutral state so particles aren't just invisible
+                const r = 15 + Math.random()*20; const t = Math.random()*6.28; const ph = Math.random()*3.14;
+                p = { x: r*Math.sin(ph)*Math.cos(t), y: r*Math.sin(ph)*Math.sin(t), z: r*Math.cos(ph), r: 0.05, g: 0.05, b: 0.1, s: 0.3 };
+
+                // Add some variety to the first 5%
                 if(i < COUNT * 0.05) {
-                    const r = 15 + Math.random()*20; const t = Math.random()*6.28; const ph = Math.random()*3.14;
-                    p = { x: r*Math.sin(ph)*Math.cos(t), y: r*Math.sin(ph)*Math.sin(t), z: r*Math.cos(ph), r: 0.1, g: 0.1, b: 0.2, s: 0.4 };
+                    p.r = 0.1; p.g = 0.1; p.b = 0.2; p.s = 0.5;
                 }
             }
             else if(tech === 'red') p = getRed(i);

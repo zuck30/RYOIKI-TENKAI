@@ -11,7 +11,7 @@ const Camera = CameraNS.Camera || window.Camera;
 const drawConnectors = DrawingNS.drawConnectors || window.drawConnectors;
 const drawLandmarks = DrawingNS.drawLandmarks || window.drawLandmarks;
 
-const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
+const HandTracker = ({ onGestureDetected, glowColor }) => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const currentDetectedRef = useRef('neutral');
@@ -110,30 +110,8 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
 
             if (detected !== currentDetectedRef.current) {
                 currentDetectedRef.current = detected;
-                onTechniqueDetected(detected);
-
-                // Trigger glow change based on technique
-                const colors = {
-                    hollowPurple: '#a855f7',
-                    red: '#ef4444',
-                    infiniteVoid: '#3b82f6',
-                    malevolentShrine: '#991b1b',
-                    blackFlash: '#000000',
-                    idleTransfiguration: '#9b59b6',
-                    boogieWoogie: '#800080',
-                    tenShadows: '#2c3e50',
-                    disasterFlames: '#ff4500',
-                    cursedSpeech: '#ffd700',
-                    construction: '#00ffff',
-                    comedy: '#ff69b4',
-                    bloodManipulation: '#8b0000',
-                    ratioTechnique: '#ffd700',
-                    jackpot: '#ffcc00',
-                    skyManipulation: '#87CEEB',
-                    neutral: '#00ffff'
-                };
-                if (onGlowChange && colors[detected]) {
-                    onGlowChange(colors[detected]);
+                if (onGestureDetected) {
+                    onGestureDetected(detected);
                 }
             }
             canvasCtx.restore();
@@ -178,7 +156,7 @@ const HandTracker = ({ onTechniqueDetected, onGlowChange, glowColor }) => {
             }
             hands.close();
         };
-    }, [onTechniqueDetected, onGlowChange]);
+    }, [onGestureDetected]);
 
     return (
         <div id="video-container">
