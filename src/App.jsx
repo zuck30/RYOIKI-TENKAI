@@ -34,8 +34,11 @@ function App() {
 
   // Ref to track if voice currently overrides gesture
   const voiceOverrideRef = useRef(null);
+  // Ref to track latest reported gesture from HandTracker
+  const lastReportedGestureRef = useRef('neutral');
 
   const handleGestureDetected = useCallback((techId) => {
+    lastReportedGestureRef.current = techId;
     // Only update if no voice override is active
     if (!voiceOverrideRef.current) {
       setCurrentTech(techId);
@@ -62,6 +65,10 @@ function App() {
       if (voiceOverrideRef.current) clearTimeout(voiceOverrideRef.current);
       voiceOverrideRef.current = setTimeout(() => {
         voiceOverrideRef.current = null;
+        // Re-apply the last reported gesture once override ends
+        const lastGesture = lastReportedGestureRef.current;
+        setCurrentTech(lastGesture);
+        setGlowColor(TECH_COLORS[lastGesture] || '#00ffff');
       }, 5000);
     }
 

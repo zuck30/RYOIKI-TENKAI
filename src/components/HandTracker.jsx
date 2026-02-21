@@ -5,21 +5,28 @@ import * as DrawingNS from '@mediapipe/drawing_utils';
 
 // Mediapipe packages often have issues with ESM imports.
 // They usually set globals on the window object.
-const Hands = HandsNS.Hands || window.Hands;
-const HAND_CONNECTIONS = HandsNS.HAND_CONNECTIONS || window.HAND_CONNECTIONS;
-const Camera = CameraNS.Camera || window.Camera;
-const drawConnectors = DrawingNS.drawConnectors || window.drawConnectors;
-const drawLandmarks = DrawingNS.drawLandmarks || window.drawLandmarks;
+const Hands = HandsNS.Hands || HandsNS.default?.Hands || window.Hands;
+const HAND_CONNECTIONS = HandsNS.HAND_CONNECTIONS || HandsNS.default?.HAND_CONNECTIONS || window.HAND_CONNECTIONS;
+const Camera = CameraNS.Camera || CameraNS.default?.Camera || window.Camera;
+const drawConnectors = DrawingNS.drawConnectors || DrawingNS.default?.drawConnectors || window.drawConnectors;
+const drawLandmarks = DrawingNS.drawLandmarks || DrawingNS.default?.drawLandmarks || window.drawLandmarks;
 
 const HandTracker = ({ onGestureDetected, glowColor }) => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const currentDetectedRef = useRef('neutral');
     const glowColorRef = useRef(glowColor);
+    const consecutiveFramesRef = useRef(0);
+    const candidateGestureRef = useRef('neutral');
+    const onGestureDetectedRef = useRef(onGestureDetected);
 
     useEffect(() => {
         glowColorRef.current = glowColor;
     }, [glowColor]);
+
+    useEffect(() => {
+        onGestureDetectedRef.current = onGestureDetected;
+    }, [onGestureDetected]);
 
     useEffect(() => {
         if (!Hands || !Camera) {
@@ -35,14 +42,15 @@ const HandTracker = ({ onGestureDetected, glowColor }) => {
 
         const hands = new Hands({
             locateFile: (file) => {
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`;
+                // Using local assets to speed up loading and improve reliability
+                return `/RYOIKI-TENKAI/mediapipe/hands/${file}`;
             }
         });
 
         hands.setOptions({
             maxNumHands: 2,
             modelComplexity: 1,
-            minDetectionConfidence: 0.7,
+            minDetectionConfidence: 0.6,
             minTrackingConfidence: 0.5
         });
 
@@ -113,10 +121,18 @@ const HandTracker = ({ onGestureDetected, glowColor }) => {
                 }
             }
 
-            if (detected !== currentDetectedRef.current) {
+            // Smoothing logic: Require 3 consecutive frames of the same gesture
+            if (detected === candidateGestureRef.current) {
+                consecutiveFramesRef.current++;
+            } else {
+                candidateGestureRef.current = detected;
+                consecutiveFramesRef.current = 1;
+            }
+
+            if (consecutiveFramesRef.current >= 3 && detected !== currentDetectedRef.current) {
                 currentDetectedRef.current = detected;
-                if (onGestureDetected) {
-                    onGestureDetected(detected);
+                if (onGestureDetectedRef.current) {
+                    onGestureDetectedRef.current(detected);
                 }
             }
             canvasCtx.restore();
@@ -131,10 +147,13 @@ const HandTracker = ({ onGestureDetected, glowColor }) => {
                 camera = new Camera(videoElement, {
                     onFrame: async () => {
                         if (isStopped) return;
-                        try {
-                            await hands.send({ image: videoElement });
-                        } catch {
-                            // Suppress errors after stop
+                        // Only send if video is playing and has data
+                        if (videoElement.readyState >= 2) {
+                            try {
+                                await hands.send({ image: videoElement });
+                            } catch {
+                                // Suppress errors after stop
+                            }
                         }
                     },
                     width: 640,
@@ -146,7 +165,23 @@ const HandTracker = ({ onGestureDetected, glowColor }) => {
             }
         };
 
-        startCamera();
+        const initializeTracker = async () => {
+            try {
+                // Explicit initialization can help detect issues early
+                await hands.initialize();
+                if (!isStopped) {
+                    await startCamera();
+                }
+            } catch (err) {
+                console.error("Hands initialization failed:", err);
+                // Fallback to starting camera anyway, as initialize might fail but send might still work
+                if (!isStopped) {
+                    await startCamera();
+                }
+            }
+        };
+
+        initializeTracker();
 
         return () => {
             isStopped = true;
@@ -161,7 +196,7 @@ const HandTracker = ({ onGestureDetected, glowColor }) => {
             }
             hands.close();
         };
-    }, [onGestureDetected]);
+    }, []); // Empty dependency array ensures this only runs once
 
     return (
         <div id="video-container">
