@@ -5,7 +5,7 @@ const sounds = {
     idleTransfiguration: new Audio(`${BASE_URL}sounds/idle-transfiguration.mp3`),
     cursedEnergy: new Audio(`${BASE_URL}sounds/cursed-energy.mp3`),
     blackFlash: new Audio(`${BASE_URL}sounds/yuji-itadori-black-flash.mp3`),
-    malevolentShrine: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`), // User mentioned unlimited-void (sukuna)
+    malevolentShrine: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`),
 };
 
 // -------------------
