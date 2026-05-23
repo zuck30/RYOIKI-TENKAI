@@ -4,27 +4,8 @@ import CursedVisualizer from './components/CursedVisualizer';
 import VoiceCommand from './components/VoiceCommand';
 import UI from './components/UI';
 import AudioManager from './utils/AudioManager';
+import { TECH_DATA } from './utils/constants';
 import './App.css';
-
-const TECH_COLORS = {
-  hollowPurple: '#a333ff',
-  infiniteVoid: '#ffffff',
-  red: '#ff0000',
-  malevolentShrine: '#ff3300',
-  blackFlash: '#ff0055',
-  idleTransfiguration: '#00ffcc',
-  boogieWoogie: '#ffff00',
-  tenShadows: '#333333',
-  disasterFlames: '#ff6600',
-  cursedSpeech: '#0066ff',
-  construction: '#999999',
-  comedy: '#ff00ff',
-  bloodManipulation: '#880000',
-  ratioTechnique: '#ccff00',
-  jackpot: '#00ffff',
-  skyManipulation: '#aaaaff',
-  neutral: '#00ffff'
-};
 
 function App() {
 
@@ -59,7 +40,12 @@ function App() {
 
       AudioManager.stopThemeMusic();
 
-      AudioManager.play(currentTech);
+      const techInfo = TECH_DATA[currentTech];
+      if (techInfo && techInfo.isDomain) {
+        AudioManager.playDomain(currentTech);
+      } else {
+        AudioManager.play(currentTech);
+      }
     }
 
   }, [currentTech, muted, audioStarted]);
@@ -72,7 +58,8 @@ function App() {
 
     setCurrentTech(techId);
 
-    setGlowColor(TECH_COLORS[techId] || '#00ffff');
+    const techInfo = TECH_DATA[techId];
+    setGlowColor(techInfo ? techInfo.color : '#00ffff');
 
   }, []);
 

@@ -1,19 +1,18 @@
-const sounds = {
-    infiniteVoid: new Audio('/sounds/unlimited-void.mp3'),
-    idleTransfiguration: new Audio('/sounds/idle-transfiguration.mp3'),
-    cursedEnergy: new Audio('/sounds/cursed-energy.mp3'),
+const BASE_URL = import.meta.env.BASE_URL || '/';
 
-    // ADD MORE TECHNIQUES HERE
-    // hollowPurple: new Audio('/sounds/hollow-purple.mp3'),
-    // malevolentShrine: new Audio('/sounds/malevolent-shrine.mp3'),
-    // blackFlash: new Audio('/sounds/black-flash.mp3'),
+const sounds = {
+    infiniteVoid: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`),
+    idleTransfiguration: new Audio(`${BASE_URL}sounds/idle-transfiguration.mp3`),
+    cursedEnergy: new Audio(`${BASE_URL}sounds/cursed-energy.mp3`),
+    blackFlash: new Audio(`${BASE_URL}sounds/yuji-itadori-black-flash.mp3`),
+    malevolentShrine: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`), // User mentioned unlimited-void (sukuna)
 };
 
 // -------------------
 // THEME MUSIC
 // -------------------
 
-const themeMusic = new Audio('/sounds/theme.mp3');
+const themeMusic = new Audio(`${BASE_URL}sounds/theme.mp3`);
 
 themeMusic.loop = true;
 themeMusic.volume = 0.35;
@@ -60,10 +59,37 @@ const play = (name, muted = false) => {
 
     sound.currentTime = 0;
 
-    sound.play().catch((err) => {
+    return sound.play().catch((err) => {
         console.log(err);
     });
 };
+
+/**
+ * Plays cursed energy charge up then the domain expansion sound
+ */
+const playDomain = (name, muted = false) => {
+    if (muted) return;
+
+    stop();
+    const cursedEnergy = sounds.cursedEnergy;
+    const domainSound = sounds[name];
+
+    if (!cursedEnergy || !domainSound) {
+        return play(name, muted);
+    }
+
+    cursedEnergy.currentTime = 0;
+    cursedEnergy.play().then(() => {
+        cursedEnergy.onended = () => {
+            domainSound.currentTime = 0;
+            domainSound.play().catch(err => console.log(err));
+            cursedEnergy.onended = null;
+        };
+    }).catch(err => {
+        console.log(err);
+        play(name, muted);
+    });
+}
 
 // -------------------
 // START THEME
@@ -114,6 +140,7 @@ const toggleMute = () => {
 
 const AudioManager = {
     play,
+    playDomain,
     stop,
     toggleMute,
     startThemeMusic,
