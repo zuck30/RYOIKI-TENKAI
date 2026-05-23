@@ -36,6 +36,28 @@ const VOICE_COMMANDS = {
   "kokusen": "blackFlash",
   "koto no shigami": "cursedSpeech",
 
+  // Character Name Shortcuts
+  "gojo": "infiniteVoid",
+  "gojo satoru": "infiniteVoid",
+  "sukuna": "malevolentShrine",
+  "ryomen sukuna": "malevolentShrine",
+  "megumi": "tenShadows",
+  "fushiguro": "tenShadows",
+  "mahito": "idleTransfiguration",
+  "yuji": "blackFlash",
+  "itadori": "blackFlash",
+  "jogo": "disasterFlames",
+  "nanami": "ratioTechnique",
+  "todo": "boogieWoogie",
+  "inumaki": "cursedSpeech",
+  "toge": "cursedSpeech",
+  "hakari": "jackpot",
+  "choso": "bloodManipulation",
+  "uro": "skyManipulation",
+  "takaba": "comedy",
+  "mai": "construction",
+
+
   // Control Commands
   "activate": "activate",
   "release": "release",
