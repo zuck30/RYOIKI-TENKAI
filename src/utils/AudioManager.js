@@ -5,13 +5,13 @@ const sounds = {
     idleTransfiguration: new Audio(`${BASE_URL}sounds/idle-transfiguration.mp3`),
     cursedEnergy: new Audio(`${BASE_URL}sounds/cursed-energy.mp3`),
     blackFlash: new Audio(`${BASE_URL}sounds/yuji-itadori-black-flash.mp3`),
-    malevolentShrine: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`),
+    malevolentShrine: new Audio(`${BASE_URL}sounds/malevolent-shrine.mp3`),
     boogieWoogie: new Audio(`${BASE_URL}sounds/jjk_todo_boogie_woogie.mp3`),
     jackpot: new Audio(`${BASE_URL}sounds/hakari-domain.mp3`),
     bloodManipulation: new Audio(`${BASE_URL}sounds/choso-kamo.mp3`),
     hollowPurple: new Audio(`${BASE_URL}sounds/gojo-satoru.mp3`),
-    tenShadows: new Audio(`${BASE_URL}sounds/gojo-satoru.mp3`),
-
+    tenShadows: new Audio(`${BASE_URL}sounds/megumi-fushiguro.mp3`),
+    infiniteVoid: new Audio(`${BASE_URL}sounds/gojo-domain.mp3`),
 
     
 };
