@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.BASE_URL || '/';
 
 const sounds = {
-    infiniteVoid: new Audio(`${BASE_URL}sounds/unlimited-void.mp3`),
+    infiniteVoid: new Audio(`${BASE_URL}sounds/gojo-domain.mp3`),
     idleTransfiguration: new Audio(`${BASE_URL}sounds/idle-transfiguration.mp3`),
     cursedEnergy: new Audio(`${BASE_URL}sounds/cursed-energy.mp3`),
     blackFlash: new Audio(`${BASE_URL}sounds/yuji-itadori-black-flash.mp3`),
@@ -11,7 +11,7 @@ const sounds = {
     bloodManipulation: new Audio(`${BASE_URL}sounds/choso-kamo.mp3`),
     hollowPurple: new Audio(`${BASE_URL}sounds/gojo-satoru.mp3`),
     tenShadows: new Audio(`${BASE_URL}sounds/megumi-fushiguro.mp3`),
-    infiniteVoid: new Audio(`${BASE_URL}sounds/gojo-domain.mp3`),
+
 
     
 };
