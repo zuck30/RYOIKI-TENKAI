@@ -29,6 +29,23 @@ const MENU_TECHNIQUES = [
   'jackpot', 'skyManipulation', 'construction', 'comedy',
 ];
 
+const buttonStyle = {
+  padding: '8px 16px',
+  background: '#000',
+  color: 'white',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  fontSize: '12px',
+  transition: 'background 0.2s'
+};
+
+const buttonActiveStyle = {
+  ...buttonStyle,
+  background: '#333'
+};
+
 const UI = ({ technique, voiceActive, lastHeard, voiceLanguage, muted, onToggleVoice, onToggleLanguage, onToggleMute, onTechSelect }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
@@ -37,6 +54,16 @@ const UI = ({ technique, voiceActive, lastHeard, voiceLanguage, muted, onToggleV
   const handleSelect = (techId) => {
     onTechSelect(techId);
     setMenuOpen(false);
+  };
+
+  const handleMenuToggle = () => {
+    setMenuOpen(!menuOpen);
+    if (guideOpen) setGuideOpen(false);
+  };
+
+  const handleGuideToggle = () => {
+    setGuideOpen(!guideOpen);
+    if (menuOpen) setMenuOpen(false);
   };
 
   return (
@@ -62,10 +89,17 @@ const UI = ({ technique, voiceActive, lastHeard, voiceLanguage, muted, onToggleV
       </div>
 
       <div style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 200, display: 'flex', gap: '8px' }}>
-        <button id="menu-toggle" onClick={() => { setMenuOpen(o => !o); setGuideOpen(false); }}>
+        <button 
+          onClick={handleMenuToggle}
+          style={menuOpen ? buttonActiveStyle : buttonStyle}
+        >
           {menuOpen ? '✕ CLOSE' : '⚡ TECHNIQUES'}
         </button>
-        <button id="menu-toggle" onClick={() => { setGuideOpen(o => !o); setMenuOpen(false); }}>
+        
+        <button 
+          onClick={handleGuideToggle}
+          style={guideOpen ? buttonActiveStyle : buttonStyle}
+        >
           {guideOpen ? '✕ CLOSE' : '🖐 GESTURES'}
         </button>
       </div>
