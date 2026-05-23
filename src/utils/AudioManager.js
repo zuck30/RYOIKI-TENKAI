@@ -10,6 +10,7 @@ const sounds = {
     jackpot: new Audio(`${BASE_URL}sounds/hakari-domain.mp3`),
     bloodManipulation: new Audio(`${BASE_URL}sounds/choso-kamo.mp3`),
     hollowPurple: new Audio(`${BASE_URL}sounds/gojo-satoru.mp3`),
+    tenShadows: new Audio(`${BASE_URL}sounds/gojo-satoru.mp3`),
 
 
     
